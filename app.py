@@ -4,10 +4,10 @@ Fitur: Regresi Linear, Klasifikasi, Clustering,
        Tambah Dataset ke MongoDB + Retraining, Komentar Publik.
 """
 import os
-import certifi
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
+import certifi
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -65,7 +65,12 @@ def connect_db():
     if not uri:
         return None, "MONGO_URI belum diatur (lihat README)."
     try:
-        client = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsCAFile=certifi.where())
+        client = MongoClient(
+            uri,
+            serverSelectionTimeoutMS=5000,
+            tlsCAFile=certifi.where(),
+            tlsAllowInvalidCertificates=True,
+        )
         client.admin.command("ping")
         return client[DB_NAME], None
     except Exception as e:  # noqa: BLE001
